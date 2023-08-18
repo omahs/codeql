@@ -102,13 +102,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     progressMonitor.MissingNuGet();
                 }
 
-                // TODO: remove the below when the required SDK is installed
-                using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
-                {
-                    Restore(solutions);
-                    Restore(allProjects);
-                    DownloadMissingPackages();
-                }
+                Restore(solutions);
+                Restore(allProjects);
+                DownloadMissingPackages();
             }
 
             assemblyCache = new AssemblyCache(dllDirNames, progressMonitor);
