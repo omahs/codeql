@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
@@ -10,12 +11,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class DotNet : IDotNet
     {
-        private const string dotnet = "dotnet";
         private readonly ProgressMonitor progressMonitor;
+        private readonly string dotnet;
 
-        public DotNet(ProgressMonitor progressMonitor)
+        public DotNet(IDependencyOptions options, ProgressMonitor progressMonitor)
         {
             this.progressMonitor = progressMonitor;
+            this.dotnet = Path.Combine(options.DotNetPath ?? string.Empty, "dotnet");
             Info();
         }
 
