@@ -460,7 +460,13 @@ codeql::UnresolvedMemberExpr ExprTranslator::translateUnresolvedMemberExpr(
 
 codeql::SequenceExpr ExprTranslator::translateSequenceExpr(const swift::SequenceExpr& expr) {
   auto entry = createExprEntry(expr);
-  entry.elements = dispatcher.fetchRepeatedLabels(expr.getElements());
+  if (expr.getNumElements() == 1) {
+    entry.elements = dispatcher.fetchRepeatedLabels(expr.getElements());
+  } else {
+    for (int i = 1; i < expr.getNumElements(); i += 2) {
+      entry.elements.emplace_back(dispatcher.fetchLabel(expr.getElement(i)));
+    }
+  }
   return entry;
 }
 
